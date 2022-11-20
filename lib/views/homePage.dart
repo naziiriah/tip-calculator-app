@@ -11,6 +11,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int tipPercent = 0;
+  int bill = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +64,19 @@ class _HomePageState extends State<HomePage> {
                   TextField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromRGBO(244, 250, 250, 1),
-                      prefixIcon: Icon(Icons.money),
-                      prefixIconColor: Color.fromRGBO(0, 73, 77, 1),
-                      hintText: '0',
-                    ),
+                        filled: true,
+                        fillColor: Color.fromRGBO(244, 250, 250, 1),
+                        prefixIcon: Icon(Icons.money),
+                        prefixIconColor: Color.fromRGBO(0, 73, 77, 1),
+                        hintText: '0',
+                        hintTextDirection: TextDirection.rtl),
+                    textDirection: TextDirection.rtl,
+                    onChanged: (value) {
+                      setState(() {
+                        bill = int.parse(value);
+                      });
+                      print(bill);
+                    },
                   ),
                   SizedBox(
                     height: 30,
@@ -82,6 +91,135 @@ class _HomePageState extends State<HomePage> {
                       wordSpacing: 2,
                       letterSpacing: 0.4,
                     ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tipPercent = 5;
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text("5 %")),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tipPercent = 10;
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text("10 %")),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tipPercent = 5;
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text("5 %")),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tipPercent = 10;
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text("10 %")),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tipPercent = 5;
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text("5 %")),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color.fromRGBO(244, 250, 250, 1),
+                              prefixIcon: Icon(Icons.money),
+                              prefixIconColor: Color.fromRGBO(0, 73, 77, 1),
+                              hintText: 'Custom',
+                              hintTextDirection: TextDirection.rtl),
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    "Number of People",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w600,
+                      color: Color.fromRGBO(94, 122, 125, 1),
+                      fontFamily: "Space Mono",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromRGBO(244, 250, 250, 1),
+                        prefixIcon: Icon(Icons.money),
+                        prefixIconColor: Color.fromRGBO(0, 73, 77, 1),
+                        hintText: '0',
+                        hintTextDirection: TextDirection.rtl),
+                    textDirection: TextDirection.rtl,
                   ),
                 ],
               ),
