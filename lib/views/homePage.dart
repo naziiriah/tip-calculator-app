@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,33 +13,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int tipPercent = 0;
-  int bill = 0;
+  double bill = 0;
+  double tipPerPerson = 0;
+  double totalPerPerson = 0;
+  int numberOfPeople = 0;
+
+  calculateTips() {
+    if (bill > 0 && tipPercent > 0 && numberOfPeople > 0) {
+      tipPerPerson = double.parse(
+          (bill * (tipPercent / 100) / numberOfPeople).toStringAsFixed(2));
+      totalPerPerson = double.parse(
+          (tipPerPerson + (bill / numberOfPeople)).toStringAsFixed(2));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(197, 228, 231, 1),
-      body: SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: 100,
-            margin: EdgeInsets.symmetric(vertical: 30, horizontal: 135),
-            child: Text(
-              "SPLITTER",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Color.fromRGBO(0, 73, 77, 1),
-                  fontSize: 30,
-                  height: 1.3,
-                  fontFamily: "Space Mono",
-                  letterSpacing: 4,
-                  fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: SafeArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 100,
+              margin: EdgeInsets.symmetric(vertical: 30, horizontal: 135),
+              child: Text(
+                "SPLITTER",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 73, 77, 1),
+                    fontSize: 30,
+                    height: 1.3,
+                    fontFamily: "Space Mono",
+                    letterSpacing: 4,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          Expanded(
-            child: Container(
+            Container(
+              height: 850,
               width: 400,
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               decoration: BoxDecoration(
@@ -72,10 +87,14 @@ class _HomePageState extends State<HomePage> {
                         hintTextDirection: TextDirection.rtl),
                     textDirection: TextDirection.rtl,
                     onChanged: (value) {
-                      setState(() {
-                        bill = int.parse(value);
-                      });
-                      print(bill);
+                      if (value == "") {
+                        print("empty");
+                      } else {
+                        setState(() {
+                          bill = double.parse(value);
+                        });
+                      }
+                      ;
                     },
                   ),
                   SizedBox(
@@ -108,9 +127,16 @@ class _HomePageState extends State<HomePage> {
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: tipPercent == 5
+                                  ? Color.fromARGB(255, 38, 192, 171)
+                                  : Color.fromARGB(255, 0, 73, 77),
                             ),
-                            child: Text("5 %")),
+                            child: Text("5%",
+                                style: TextStyle(
+                                    fontFamily: "Space Mono",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24))),
                       ),
                       SizedBox(
                         height: 50,
@@ -122,9 +148,16 @@ class _HomePageState extends State<HomePage> {
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: tipPercent == 10
+                                  ? Color.fromARGB(255, 38, 192, 171)
+                                  : Color.fromARGB(255, 0, 73, 77),
                             ),
-                            child: Text("10 %")),
+                            child: Text("10%",
+                                style: TextStyle(
+                                    fontFamily: "Space Mono",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24))),
                       ),
                     ],
                   ),
@@ -138,13 +171,20 @@ class _HomePageState extends State<HomePage> {
                         child: TextButton(
                             onPressed: () {
                               setState(() {
-                                tipPercent = 5;
+                                tipPercent = 15;
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: tipPercent == 15
+                                  ? Color.fromARGB(255, 38, 192, 171)
+                                  : Color.fromARGB(255, 0, 73, 77),
                             ),
-                            child: Text("5 %")),
+                            child: Text("15%",
+                                style: TextStyle(
+                                    fontFamily: "Space Mono",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24))),
                       ),
                       SizedBox(
                         height: 50,
@@ -152,13 +192,22 @@ class _HomePageState extends State<HomePage> {
                         child: TextButton(
                             onPressed: () {
                               setState(() {
-                                tipPercent = 10;
+                                tipPercent = 25;
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: tipPercent == 25
+                                  ? Color.fromARGB(255, 38, 192, 171)
+                                  : Color.fromARGB(255, 0, 73, 77),
                             ),
-                            child: Text("10 %")),
+                            child: Text(
+                              "25%",
+                              style: TextStyle(
+                                  fontFamily: "Space Mono",
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24),
+                            )),
                       ),
                     ],
                   ),
@@ -172,13 +221,22 @@ class _HomePageState extends State<HomePage> {
                         child: TextButton(
                             onPressed: () {
                               setState(() {
-                                tipPercent = 5;
+                                tipPercent = 50;
                               });
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: tipPercent == 50
+                                  ? Color.fromARGB(255, 38, 192, 171)
+                                  : Color.fromARGB(255, 0, 73, 77),
                             ),
-                            child: Text("5 %")),
+                            child: Text(
+                              "50%",
+                              style: TextStyle(
+                                  fontFamily: "Space Mono",
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24),
+                            )),
                       ),
                       SizedBox(
                         height: 50,
@@ -193,6 +251,11 @@ class _HomePageState extends State<HomePage> {
                               hintText: 'Custom',
                               hintTextDirection: TextDirection.rtl),
                           textDirection: TextDirection.rtl,
+                          onChanged: (value) {
+                            setState(() {
+                              tipPercent = int.parse(value);
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -215,18 +278,116 @@ class _HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Color.fromRGBO(244, 250, 250, 1),
-                        prefixIcon: Icon(Icons.money),
+                        prefixIcon: Icon(Icons.person),
                         prefixIconColor: Color.fromRGBO(0, 73, 77, 1),
                         hintText: '0',
                         hintTextDirection: TextDirection.rtl),
                     textDirection: TextDirection.rtl,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value != "") {
+                          numberOfPeople = int.parse(value);
+                        }
+                      });
+                      calculateTips();
+                    },
                   ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                      height: 250,
+                      width: 400,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 0, 73, 77),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Tip Amount ",
+                                    style: TextStyle(
+                                        fontFamily: "Space Mono",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 24),
+                                  ),
+                                  Text(
+                                    "/ person",
+                                    style: TextStyle(
+                                        fontFamily: "Space Mono",
+                                        color:
+                                            Color.fromARGB(100, 255, 255, 255),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Text(
+                                "$tipPerPerson",
+                                style: TextStyle(
+                                    fontFamily: "Space Mono",
+                                    color: Color.fromARGB(255, 38, 192, 171),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 40),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Total",
+                                    style: TextStyle(
+                                        fontFamily: "Space Mono",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 24),
+                                  ),
+                                  Text(
+                                    "/ person",
+                                    style: TextStyle(
+                                        fontFamily: "Space Mono",
+                                        color:
+                                            Color.fromARGB(100, 255, 255, 255),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Text(
+                                "$totalPerPerson",
+                                style: TextStyle(
+                                    fontFamily: "Space Mono",
+                                    color: Color.fromARGB(255, 38, 192, 171),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
-          )
-        ],
-      )),
+          ],
+        )),
+      ),
     );
   }
 }
